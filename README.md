@@ -92,12 +92,23 @@ curl -X POST http://127.0.0.1:8000/improve-prompt -H "Content-Type: application/
 | Qué sugirió la IA | Qué validé / ajusté yo |
 |---|---|
 | Estructura en rutas, servicios y esquemas | (completar: qué revisé y por qué) |
-| Reglas de validación del prompt | (completar: qué probé y qué cambié) |
+| Reglas de validación del prompt | Probé en la interfaz el prompt "Eres un tutor de Python. Dame un plan de estudio de 4 semanas para un principiante. Responde en una tabla." y dio solo 50 de 100, aunque tiene verbo de acción y formato. Encontré que las listas de palabras eran demasiado cortas ("dame" no estaba y buscaba "en tabla", no "en una tabla"). Agregué verbos en español, cambié los marcadores de formato y escribí una prueba para que no vuelva a pasar |
 | Endpoint `/improve-prompt` con modo de respaldo sin clave | (completar: cómo lo probé, con el mock o con la clave real) |
 | Contenido del `SKILL.md` | (completar: cómo probé la skill con Copilot u otro agente) |
 
-**Validación realizada:** `pytest` (13 pruebas), pruebas con el servidor simulado de OpenAI y revisión de las
-3 vistas en escritorio y móvil. (Agrega aquí capturas y los ajustes propios que hiciste.)
+**Validación realizada:** `pytest` (14 pruebas), pruebas con el servidor simulado de OpenAI y revisión de las
+3 vistas en escritorio y móvil.
+
+**Evidencia:**
+
+1. Un fallo real que encontré al probar la interfaz: un prompt completo recibió 50 de 100.
+   ![Puntaje de 50 en un prompt completo](docs/img/validador-puntaje-50.png)
+
+2. Después del ajuste y de la prueba nueva, las 14 pruebas pasan.
+   ![pytest con 14 pruebas pasando](docs/img/pytest-14-passed.png)
+
+3. El hook `commit-msg` rechaza el mensaje `cambios` porque no sigue Conventional Commits.
+   ![Hook que rechaza un commit sin formato](docs/img/hook-rechaza-commit.png)
 
 ## 8. Qué del curso apliqué y dónde
 
