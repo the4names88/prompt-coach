@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Coach · Prompt mejorado</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body data-page="mejorado">
+  <div class="wrap">
+    <header class="top">
+      <div class="logo">Prompt <span>Coach</span></div>
+      <span class="badge-mode" id="mode-badge">...</span>
+    </header>
+    <ol class="steps" aria-label="Pasos">
+      <li>1 · Escribir</li>
+      <li>2 · Evaluar</li>
+      <li class="on">3 · Mejorar</li>
+    </ol>
+
+    <h1>Tu prompt mejorado</h1>
+    <p class="lead" id="mode"></p>
+
+    <div class="card">
+      <h2>Antes y después</h2>
+      <div class="compare">
+        <div>
+          <strong>Original · <span id="score-before">0</span>/100</strong>
+          <div class="box" id="original"></div>
+        </div>
+        <div>
+          <strong>Mejorado · <span id="score-after">0</span>/100 <span class="delta" id="score-delta"></span></strong>
+          <div class="box new" id="improved"></div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="primary" id="btn-copiar" type="button">Copiar prompt mejorado</button>
+        <button id="btn-nuevo" type="button">Probar otro prompt</button>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="card">
+      <h2>Qué cambió</h2>
+      <ul class="list" id="changes"></ul>
+    </div>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Coach · Escribe tu prompt</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body data-page="escribir">
+  <div class="wrap">
+    <header class="top">
+      <div class="logo">Prompt <span>Coach</span></div>
+      <span class="badge-mode" id="mode-badge">...</span>
+    </header>
+    <ol class="steps" aria-label="Pasos">
+      <li class="on">1 · Escribir</li>
+      <li>2 · Evaluar</li>
+      <li>3 · Mejorar</li>
+    </ol>
+
+    <h1>Escribe el prompt que quieres mejorar</h1>
+    <p class="lead">Lo evaluamos con 4 criterios y, si quieres, lo reescribimos mejor.</p>
+
+    <div class="card">
+      <label for="prompt-input"><h2>Tu prompt</h2></label>
+      <textarea id="prompt-input" placeholder="Ejemplo: dame un plan de estudio de Python"></textarea>
+      <div class="counter" id="counter">0 / 5000</div>
+      <div class="actions">
+        <button class="primary" id="btn-evaluar" type="button">Evaluar prompt</button>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

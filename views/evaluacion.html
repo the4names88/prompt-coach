@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Coach · Evaluación</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body data-page="evaluacion">
+  <div class="wrap">
+    <header class="top">
+      <div class="logo">Prompt <span>Coach</span></div>
+      <span class="badge-mode" id="mode-badge">...</span>
+    </header>
+    <ol class="steps" aria-label="Pasos">
+      <li>1 · Escribir</li>
+      <li class="on">2 · Evaluar</li>
+      <li>3 · Mejorar</li>
+    </ol>
+
+    <h1>Así salió tu prompt</h1>
+    <p class="lead" id="verdict"></p>
+
+    <div class="card">
+      <div class="score-row">
+        <div class="score" id="score" aria-label="Puntaje"></div>
+        <ul class="checks" id="checks" style="flex:1; min-width:220px"></ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Qué mejorar</h2>
+      <ul class="list" id="suggestions"></ul>
+    </div>
+
+    <div class="card">
+      <h2>Tu prompt</h2>
+      <div class="box" id="prompt-echo"></div>
+      <div class="actions">
+        <button class="primary" id="btn-mejorar" type="button">Mejorar mi prompt</button>
+        <a class="btn" href="/views/escribir.html">Editar</a>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
