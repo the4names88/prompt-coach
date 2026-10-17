@@ -1,0 +1,22 @@
+#!/bin/sh
+# Hook pre-commit: bloquea archivos .env y claves en lo que vas a subir.
+# Misma idea que el hook de secretos de la guía 27, en versión simple.
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+
+# 1) Nunca subir archivos .env (el .env.example sí se permite)
+for f in $staged; do
+  case "$f" in
+    .env.example|*/.env.example) ;;
+    .env|*/.env|.env.*|*/.env.*)
+      echo "pre-commit: bloqueado, no subas $f (guarda las claves en variables de entorno)." >&2
+      exit 1 ;;
+  esac
+done
+
+# 2) Buscar claves en las líneas agregadas
+if git diff --cached -U0 | grep -E '^\+' | grep -Eq 'AKIA[0-9A-Z]{16}|sk-[A-Za-z0-9_-]{20,}|AIza[0-9A-Za-z_-]{30,}|-----BEGIN [A-Z ]*PRIVATE KEY-----'; then
+  echo "pre-commit: bloqueado, parece que hay una API key en los cambios." >&2
+  echo "  Quitala del archivo y leela con os.environ. Si ya la pegaste en otro lado, revocala." >&2
+  exit 1
+fi
+exit 0

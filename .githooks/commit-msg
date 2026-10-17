@@ -1,0 +1,27 @@
+#!/bin/sh
+# Hook commit-msg: exige Conventional Commits (guías 11 y 22 del curso).
+# Se activa una vez por clon con:  git config core.hooksPath .githooks
+msg_file="$1"
+first_line=$(head -n 1 "$msg_file")
+
+# Deja pasar los commits automáticos de Git
+case "$first_line" in
+  Merge\ *|Revert\ *|fixup!*|squash!*) exit 0 ;;
+esac
+
+pattern='^(feat|fix|docs|style|refactor|test|chore|perf|build|ci|revert)(\([a-z0-9._-]+\))?!?: [^ ].{0,70}$'
+if ! printf '%s' "$first_line" | grep -Eq "$pattern"; then
+  echo "commit-msg: mensaje rechazado." >&2
+  echo "  Recibido: $first_line" >&2
+  echo "  Formato:  tipo(alcance opcional): descripcion corta en imperativo" >&2
+  echo "  Tipos:    feat, fix, docs, style, refactor, test, chore, perf, build, ci, revert" >&2
+  echo "  Ejemplo:  feat(menu): agrega vista del menu generada desde stitch" >&2
+  exit 1
+fi
+
+case "$first_line" in
+  *.)
+    echo "commit-msg: quita el punto final del mensaje." >&2
+    exit 1 ;;
+esac
+exit 0
