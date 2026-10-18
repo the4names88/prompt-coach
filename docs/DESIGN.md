@@ -65,5 +65,24 @@ Los ids y clases que necesita `static/app.js` están en `docs/GUIA-STITCH.md`, s
 rediseño debe conservarlos.
 
 ## 9. Valores finales de Stitch
-(Completar al importar las pantallas: paleta, tipografías y componentes que Stitch realmente generó, y qué
-se cambió respecto a este documento.)
+Lo que Stitch realmente generó (leído del HTML exportado en `stitch-export/`, descargado con el MCP de Stitch desde Cline).
+
+**Paleta** (configuración de Tailwind de las pantallas): tinta `#14213D`, texto secundario `#5B6577`,
+acento verde azulado `#0F5C5A` (hover `#0b4745`), fondo `#EEF1EC`, marcador `#FFE45C`, aprobado `#1F9D6B`,
+error `#D64545`, borde fino `#D9DED3`. Coincide con la sección 2.
+
+**Tipografías:** Bricolage Grotesque (títulos, pesos 600 a 800), Plus Jakarta Sans (texto) y JetBrains Mono
+(prompts). Coincide con la sección 3.
+
+**Componentes generados:** header en píldora flotante con logo e indicador "IA activa"; indicador de 3 pasos en
+píldora; contenedores de doble marco (bandeja translúcida de 6 px + núcleo blanco); botón principal en píldora con
+círculo y flecha; chequeos con borde izquierdo de 3 px y símbolo ✓/✕; prompt mejorado sobre fondo marcador.
+
+**Diferencias respecto a este documento y qué se cambió al importar:**
+- Los radios de las esquinas varían entre pantallas (32/26, 28/24 y 34/28 px); se dejaron como los generó Stitch.
+- La Vista 3 usó un monograma "PC" como logo y las Vistas 1 y 2 un icono; se dejó tal cual.
+- Stitch agregó textos que no se pidieron ("Auditoría de Entrada", "Bajo rendimiento", "Optimización completada",
+  "Puntaje máximo", "33 caracteres"). Se quitaron: eran cifras y etiquetas fijas que no coinciden con los datos reales.
+- Los textos de ejemplo de puntaje, chequeos, sugerencias y prompt mejorado se vaciaron: los llena la API.
+- El anillo de puntaje de Stitch era un SVG fijo; se reemplazó por un anillo de CSS (`conic-gradient`) que se
+  llena con el puntaje real.

@@ -28,7 +28,8 @@ app/
   services/analysis.py     # lógica: validación y análisis de texto
   services/llm.py          # lógica: mejora de prompts (OpenAI o reglas)
   services/skill_loader.py # lee los metadatos de las skills
-views/                     # 3 vistas HTML (diseño de Stitch)
+views/                     # 3 vistas HTML (diseño de Stitch adaptado)
+stitch-export/             # HTML original descargado de Stitch con el MCP (sin modificar)
 static/                    # app.js y styles.css compartidos
 .github/skills/prompt-validator/SKILL.md   # la skill
 docs/                      # SPEC, guía y prompts de Stitch, hooks, commits, explicación
@@ -82,8 +83,12 @@ curl -X POST http://127.0.0.1:8000/improve-prompt -H "Content-Type: application/
 ## 6. Uso de OpenAI y Stitch
 - **OpenAI** (guía 19 del curso): Responses API, salida JSON con esquema estricto, modelo y clave en variables
   de entorno, errores 401/404/429 traducidos y el texto del usuario solo en el rol `user`.
-- **Stitch** (guía 22): las 3 vistas se diseñan en Stitch y se importan a `views/` con su MCP desde OpenCode.
-  Los prompts usados están en `docs/prompts-stitch.md` y el contrato de ids en `docs/GUIA-STITCH.md`.
+- **Stitch** (guía 22): las 3 vistas se diseñaron en Stitch. Con el MCP de Stitch conectado a Cline se listaron
+  las pantallas del proyecto y se descargó el HTML real de cada una (`stitch-export/`). Luego se adaptaron a
+  `views/`: se conservó el diseño, se pusieron los ids que necesita `static/app.js`, se vaciaron los textos de
+  ejemplo que llena la API y se quitaron etiquetas inventadas por Stitch. Los estilos usan el Tailwind por CDN
+  que exporta Stitch, así que la interfaz necesita internet. Los prompts usados están en `docs/prompts-stitch.md`,
+  los valores finales en `docs/DESIGN.md` (sección 9) y el contrato de ids en `docs/GUIA-STITCH.md`.
 - **Spec** (guías 13 a 15): `docs/SPEC.md` define requisitos, casos borde y criterios de terminado antes del código.
 
 ## 7. Evidencia del uso consciente de herramientas de IA
