@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prompt Coach - Evaluación</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#14213D',
+            'secondary-text': '#5B6577',
+            'teal-brand': '#0F5C5A',
+            'canvas-bg': '#EEF1EC',
+            marker: '#FFE45C'
+          },
+          fontFamily: {
+            title: ['"Bricolage Grotesque"', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #EEF1EC;
+      color: #14213D;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#EEF1EC] text-[#14213D] antialiased selection:bg-[#0F5C5A]/15 selection:text-[#0F5C5A]">
+<!-- Contenedor centralizado de una sola columna amplia (~840px) -->
+<div class="max-w-[840px] mx-auto px-4 sm:px-6 pt-8 pb-20">
+<!-- 1. Header flotante en píldora despegada arriba -->
+<header class="bg-white/85 backdrop-blur-md rounded-full px-6 py-3.5 shadow-[0_12px_30px_-8px_rgba(15,92,90,0.07)] border border-white/80 flex items-center justify-between mb-8">
+<!-- Logo e Identidad -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#0F5C5A] flex items-center justify-center text-white shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M12 3H7a4 4 0 0 0 0 8h5a4 4 0 0 1 0 8H7"></path>
+<path d="M7 11V3"></path>
+</svg>
+</div>
+<span class="font-title font-bold text-lg tracking-tight text-[#14213D]">Prompt Coach</span>
+</div>
+<!-- Etiqueta IA activa -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full border border-[#0F5C5A]/15 bg-[#0F5C5A]/[0.08]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#0F5C5A]"></span>
+<span class="font-body text-[13px] font-medium text-[#0F5C5A]">IA activa</span>
+</div>
+</header>
+<!-- 2. Stepper flotante centrado en píldora -->
+<div class="flex justify-center mb-8">
+<nav aria-label="Progreso" class="inline-flex items-center bg-white/90 backdrop-blur-md px-2 py-1.5 rounded-full border border-[rgba(15,92,90,0.08)] shadow-[0_8px_20px_-6px_rgba(15,92,90,0.05)] gap-1">
+<!-- Paso 1: Inactivo -->
+<span class="text-[#5B6577] px-4 py-2 text-sm font-medium hover:text-[#14213D] transition-colors cursor-pointer">
+          1 · Escribir
+        </span>
+<!-- Paso 2: Activo -->
+<span class="bg-[#0F5C5A] text-white px-5 py-2 rounded-full font-medium text-sm shadow-[0_4px_12px_rgba(15,92,90,0.2)] transition-all">
+          2 · Evaluar
+        </span>
+<!-- Paso 3: Inactivo -->
+<span class="text-[#5B6577] px-4 py-2 text-sm font-medium">
+          3 · Mejorar
+        </span>
+</nav>
+</div>
+<!-- Flujo vertical en UNA SOLA COLUMNA amplia -->
+<main class="flex flex-col gap-6 w-full">
+<!-- 3. Tarjeta de doble marco para la Auditoría / Puntaje -->
+<section class="bg-white/70 backdrop-blur-md p-1.5 rounded-[28px] shadow-[0_20px_40px_-15px_rgba(15,92,90,0.07),0_0_0_1px_rgba(15,92,90,0.08)]">
+<div class="bg-white rounded-[24px] p-6 sm:p-8 flex flex-col shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)]">
+<!-- Encabezado de la auditoría -->
+<div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-[rgba(15,92,90,0.06)] mb-6">
+<div class="flex flex-col">
+<span class="font-body text-xs font-semibold uppercase tracking-wider text-[#5B6577]">Auditoría de Entrada</span>
+<h1 class="font-title text-2xl sm:text-3xl font-bold text-[#14213D] tracking-tight mt-0.5">Resultado de la evaluación</h1>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#D64545]/10 text-[#D64545] border border-[#D64545]/20">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D64545]"></span>
+              Bajo rendimiento
+            </span>
+</div>
+<!-- Layout horizontal amplio interior: Círculo a la izquierda y 4 filas a la derecha -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+<!-- Círculo grande de puntaje (md:col-span-5) -->
+<div class="md:col-span-5 flex flex-col items-center justify-center text-center p-2">
+<div class="relative w-44 h-44 shrink-0 flex items-center justify-center">
+<svg aria-label="Puntaje de 25 sobre 100" class="w-full h-full -rotate-90" viewbox="0 0 120 120">
+<!-- Anillo de fondo -->
+<circle cx="60" cy="60" fill="none" r="50" stroke="#EEF1EC" stroke-width="10"></circle>
+<!-- Arco de 25% con stroke rojo lápiz -->
+<circle class="transition-all duration-1000 ease-out" cx="60" cy="60" fill="none" r="50" stroke="#D64545" stroke-dasharray="314.16" stroke-dashoffset="235.62" stroke-linecap="round" stroke-width="10"></circle>
+</svg>
+<!-- Texto display centrado -->
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-title text-5xl font-extrabold tracking-tight text-[#14213D] leading-none">25</span>
+<span class="font-title text-sm font-semibold text-[#5B6577] mt-1">/ 100</span>
+</div>
+</div>
+<span class="font-title text-base font-bold text-[#14213D] mt-3">Diagnóstico inicial</span>
+<p class="font-body text-xs text-[#5B6577] max-w-xs mt-0.5">Requiere contexto, rol y delimitación de formato.</p>
+</div>
+<!-- Lista de chequeo en 4 filas a ancho completo (md:col-span-7) -->
+<div class="md:col-span-7 flex flex-col gap-2.5 w-full">
+<!-- Fila 1: Longitud mínima (Cumplida) -->
+<div class="flex items-center justify-between px-4 py-3 bg-[#EEF1EC]/60 rounded-xl border-l-[3px] border-[#1F9D6B] w-full">
+<div class="flex items-center gap-3">
+<span class="w-5 h-5 rounded-full bg-[#1F9D6B]/15 text-[#1F9D6B] font-mono font-bold text-xs flex items-center justify-center shrink-0">✓</span>
+<span class="font-body text-sm font-semibold text-[#14213D] whitespace-nowrap">Longitud mínima</span>
+</div>
+<span class="font-body text-xs font-semibold text-[#1F9D6B] bg-[#1F9D6B]/10 px-2.5 py-0.5 rounded-full whitespace-nowrap">Cumplida</span>
+</div>
+<!-- Fila 2: Tarea clara (Pendiente) -->
+<div class="flex items-center justify-between px-4 py-3 bg-[#EEF1EC]/60 rounded-xl border-l-[3px] border-[#D64545] w-full">
+<div class="flex items-center gap-3">
+<span class="w-5 h-5 rounded-full bg-[#D64545]/15 text-[#D64545] font-mono font-bold text-xs flex items-center justify-center shrink-0">✕</span>
+<span class="font-body text-sm font-semibold text-[#14213D] whitespace-nowrap">Tarea clara (verbo de acción)</span>
+</div>
+<span class="font-body text-xs font-semibold text-[#D64545] bg-[#D64545]/10 px-2.5 py-0.5 rounded-full whitespace-nowrap">Pendiente</span>
+</div>
+<!-- Fila 3: Contexto o rol (Pendiente) -->
+<div class="flex items-center justify-between px-4 py-3 bg-[#EEF1EC]/60 rounded-xl border-l-[3px] border-[#D64545] w-full">
+<div class="flex items-center gap-3">
+<span class="w-5 h-5 rounded-full bg-[#D64545]/15 text-[#D64545] font-mono font-bold text-xs flex items-center justify-center shrink-0">✕</span>
+<span class="font-body text-sm font-semibold text-[#14213D] whitespace-nowrap">Contexto o rol</span>
+</div>
+<span class="font-body text-xs font-semibold text-[#D64545] bg-[#D64545]/10 px-2.5 py-0.5 rounded-full whitespace-nowrap">Pendiente</span>
+</div>
+<!-- Fila 4: Formato de salida (Pendiente) -->
+<div class="flex items-center justify-between px-4 py-3 bg-[#EEF1EC]/60 rounded-xl border-l-[3px] border-[#D64545] w-full">
+<div class="flex items-center gap-3">
+<span class="w-5 h-5 rounded-full bg-[#D64545]/15 text-[#D64545] font-mono font-bold text-xs flex items-center justify-center shrink-0">✕</span>
+<span class="font-body text-sm font-semibold text-[#14213D] whitespace-nowrap">Formato de salida</span>
+</div>
+<span class="font-body text-xs font-semibold text-[#D64545] bg-[#D64545]/10 px-2.5 py-0.5 rounded-full whitespace-nowrap">Pendiente</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Tarjeta de doble marco "Qué mejorar" -->
+<section class="bg-white/70 backdrop-blur-md p-1.5 rounded-[28px] shadow-[0_20px_40px_-15px_rgba(15,92,90,0.07),0_0_0_1px_rgba(15,92,90,0.08)]">
+<div class="bg-white rounded-[24px] p-6 sm:p-8 flex flex-col shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)]">
+<div class="flex items-center gap-2 mb-6">
+<span class="w-2.5 h-2.5 rounded-full bg-[#0F5C5A]"></span>
+<h2 class="font-title text-xl sm:text-2xl font-bold text-[#14213D] tracking-tight">Qué mejorar</h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Sugerencia 1 -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-[#EEF1EC]/40 border border-[rgba(15,92,90,0.05)]">
+<span class="w-7 h-7 rounded-full bg-[#0F5C5A]/10 text-[#0F5C5A] font-mono text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+<div class="flex flex-col">
+<span class="font-body text-sm sm:text-base font-bold text-[#14213D]">Define una acción concreta</span>
+<p class="font-body text-sm text-[#5B6577] mt-0.5 leading-relaxed">
+                  Reemplaza peticiones genéricas por instrucciones operativas precisas.
+                </p>
+</div>
+</div>
+<!-- Sugerencia 2 -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-[#EEF1EC]/40 border border-[rgba(15,92,90,0.05)]">
+<span class="w-7 h-7 rounded-full bg-[#0F5C5A]/10 text-[#0F5C5A] font-mono text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+<div class="flex flex-col">
+<span class="font-body text-sm sm:text-base font-bold text-[#14213D]">Asigna un rol y contexto</span>
+<p class="font-body text-sm text-[#5B6577] mt-0.5 leading-relaxed">
+                  Especifica a quién se dirige la IA y el nivel de profundidad deseado.
+                </p>
+</div>
+</div>
+<!-- Sugerencia 3 -->
+<div class="flex items-start gap-4 p-4 rounded-xl bg-[#EEF1EC]/40 border border-[rgba(15,92,90,0.05)]">
+<span class="w-7 h-7 rounded-full bg-[#0F5C5A]/10 text-[#0F5C5A] font-mono text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+<div class="flex flex-col">
+<span class="font-body text-sm sm:text-base font-bold text-[#14213D]">Indica el formato de entrega</span>
+<p class="font-body text-sm text-[#5B6577] mt-0.5 leading-relaxed">
+                  Solicita expresamente una tabla, lista numerada o esquema técnico.
+                </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Tarjeta de doble marco con el Prompt Original -->
+<section class="bg-white/70 backdrop-blur-md p-1.5 rounded-[28px] shadow-[0_20px_40px_-15px_rgba(15,92,90,0.07),0_0_0_1px_rgba(15,92,90,0.08)]">
+<div class="bg-white rounded-[24px] p-6 sm:p-7 flex flex-col shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)]">
+<div class="flex items-center justify-between mb-3">
+<span class="font-body text-xs font-semibold uppercase tracking-wider text-[#5B6577]">Prompt original</span>
+<span class="font-mono text-xs text-[#5B6577] bg-[#EEF1EC] px-2.5 py-0.5 rounded-full">33 caracteres</span>
+</div>
+<div class="bg-[#EEF1EC]/70 rounded-xl p-4 font-mono text-sm sm:text-base text-[#14213D] border border-[rgba(15,92,90,0.07)] leading-relaxed selection:bg-[#FFE45C] select-all">
+            dame un plan de estudio de Python
+          </div>
+</div>
+</section>
+<!-- 6. Botones de acción alineados lado a lado (flex-row) -->
+<div class="flex flex-col sm:flex-row items-center gap-4 pt-2">
+<!-- Botón Primario: Mejorar mi prompt -->
+<button class="group flex-1 w-full sm:w-auto bg-[#0F5C5A] hover:bg-[#0b4745] active:scale-[0.99] text-white pl-7 pr-2.5 py-3.5 rounded-full font-body font-semibold text-sm sm:text-base transition-all duration-200 shadow-[0_12px_24px_-8px_rgba(15,92,90,0.35)] flex items-center justify-between gap-4 cursor-pointer" type="button">
+<span>Mejorar mi prompt</span>
+<div class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0 transition-transform group-hover:translate-x-0.5">
+<svg class="w-4 h-4 text-white stroke-[2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<path d="M5 12h14"></path>
+<path d="M12 5l7 7-7 7"></path>
+</svg>
+</div>
+</button>
+<!-- Botón Secundario: Editar -->
+<button class="w-full sm:w-auto bg-white hover:bg-white/85 active:scale-[0.99] text-[#14213D] px-8 py-3.5 rounded-full font-body font-semibold text-sm sm:text-base transition-all duration-200 border border-[#D9DED3] shadow-[0_4px_12px_rgba(15,92,90,0.04)] text-center cursor-pointer" type="button">
+          Editar
+        </button>
+</div>
+</main>
+</div>
+</body></html>

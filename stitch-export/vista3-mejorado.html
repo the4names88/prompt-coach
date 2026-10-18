@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt mejorado - Prompt Coach</title>
+  <!-- Google Fonts: Bricolage Grotesque, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canvas: '#EEF1EC',
+            ink: '#14213D',
+            muted: '#5B6577',
+            accent: '#0F5C5A',
+            'accent-hover': '#0b4745',
+            'accent-light': '#E6F0EE',
+            marker: '#FFE45C',
+            borderline: '#D9DED3',
+            success: '#1F9D6B',
+          },
+          fontFamily: {
+            display: ['"Bricolage Grotesque"', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          boxShadow: {
+            'floating': '0 20px 40px -15px rgba(15, 92, 90, 0.08), 0 0 1px 1px rgba(255, 255, 255, 0.9) inset',
+            'inner-glow': 'inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 12px 32px -8px rgba(15, 92, 90, 0.06)',
+            'btn': '0 8px 20px -4px rgba(15, 92, 90, 0.25)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #EEF1EC;
+      color: #14213D;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .double-frame-outer {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(217, 222, 211, 0.7);
+      padding: 6px;
+      border-radius: 34px;
+      box-shadow: 0 20px 40px -15px rgba(15, 92, 90, 0.07);
+    }
+    .double-frame-inner {
+      background: #FFFFFF;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 2px 8px rgba(15, 92, 90, 0.03);
+    }
+    .marker-bg {
+      background-color: rgba(255, 228, 92, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 flex flex-col items-center justify-start">
+
+  <main class="w-full max-w-[840px] flex flex-col gap-8">
+
+    <!-- 1. HEADER FLOTANTE -->
+    <header class="w-full bg-white/80 backdrop-blur-md border border-white/90 rounded-full px-6 py-3.5 flex items-center justify-between shadow-floating">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white font-mono font-bold text-sm tracking-tight shadow-sm">
+          PC
+        </div>
+        <span class="font-display font-bold text-lg tracking-tight text-ink">Prompt Coach</span>
+      </div>
+      <div class="flex items-center gap-2 bg-[#F1F5EE] px-3.5 py-1.5 rounded-full border border-[#D9DED3]/60">
+        <span class="w-2 h-2 rounded-full bg-success"></span>
+        <span class="text-xs font-semibold text-accent tracking-wide">IA activa</span>
+      </div>
+    </header>
+
+    <!-- STEPPER FLOTANTE (3 · Mejorar ACTIVO) -->
+    <nav aria-label="Progreso" class="self-center bg-white/90 backdrop-blur-md border border-white rounded-full p-1.5 shadow-floating flex items-center gap-1.5 text-xs font-semibold">
+      <div class="px-4 py-2 rounded-full text-muted flex items-center gap-1.5">
+        <span>1 · Escribir</span>
+      </div>
+      <div class="px-4 py-2 rounded-full text-muted flex items-center gap-1.5">
+        <span>2 · Evaluar</span>
+      </div>
+      <div class="px-4 py-2 rounded-full bg-accent text-white flex items-center gap-1.5 shadow-sm">
+        <span>3 · Mejorar</span>
+      </div>
+    </nav>
+
+    <!-- 2. TÍTULO Y LÍNEA "MEJORADO CON IA" -->
+    <section class="flex flex-col gap-1.5 px-2">
+      <h1 class="font-display font-extrabold text-3xl sm:text-4xl tracking-tight text-ink">
+        Tu prompt mejorado
+      </h1>
+      <p class="text-sm font-semibold text-accent flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+        Mejorado con IA
+      </p>
+    </section>
+
+    <!-- 3. TARJETA ANTES Y DESPUÉS (DOBLE MARCO) -->
+    <section class="double-frame-outer">
+      <div class="double-frame-inner p-6 sm:p-8 flex flex-col gap-6">
+        <div class="flex items-center justify-between border-b border-[#EEF1EC] pb-4">
+          <h2 class="font-display font-bold text-lg text-ink">Antes y después</h2>
+          <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-success border border-success/20">
+            Optimización completada
+          </span>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <!-- Fila Original -->
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between text-xs font-semibold text-muted">
+              <span>Original · 25/100</span>
+              <span class="text-[#D64545] font-mono">Bajo rendimiento</span>
+            </div>
+            <div class="bg-[#F7F9F6] border border-[#D9DED3]/70 rounded-2xl px-5 py-3.5 font-mono text-sm text-ink/90">
+              dame un plan de estudio de Python
+            </div>
+          </div>
+
+          <!-- Fila Mejorado -->
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between text-xs font-semibold">
+              <span class="text-accent font-bold">Mejorado · 100/100 · +75 puntos</span>
+              <span class="text-success font-bold font-mono">Puntaje máximo</span>
+            </div>
+            <!-- Prompt de 5 líneas en JetBrains Mono sobre fondo amarillo marcador al 40% -->
+            <div class="marker-bg border border-[#FFE45C] rounded-2xl p-5 sm:p-6 font-mono text-sm text-ink leading-relaxed space-y-2">
+              <p><strong class="text-ink font-semibold">Contexto:</strong> Eres un tutor senior de Python especializado en pedagogía acelerada.</p>
+              <p><strong class="text-ink font-semibold">Tarea:</strong> Diseña un plan de estudio intensivo de 4 semanas para un estudiante sin experiencia previa en programación.</p>
+              <p><strong class="text-ink font-semibold">Restricciones:</strong> Distribuye el contenido en 5 sesiones semanales de 45 minutos y prioriza proyectos prácticos sobre teoría abstracta.</p>
+              <p><strong class="text-ink font-semibold">Formato de salida:</strong> Entrega el plan en una tabla estructurada con columnas para Semana, Día, Tema, Mini-ejercicio y Recurso recomendado.</p>
+              <p><strong class="text-ink font-semibold">Criterio de éxito:</strong> Al concluir las 4 semanas, el estudiante debe ser capaz de construir una aplicación CLI funcional y documentada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TARJETA "QUÉ CAMBIÓ" (DOBLE MARCO) -->
+    <section class="double-frame-outer">
+      <div class="double-frame-inner p-6 sm:p-8 flex flex-col gap-5">
+        <h2 class="font-display font-bold text-lg text-ink flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-accent"></span>
+          Qué cambió
+        </h2>
+        <ul class="flex flex-col gap-3.5 text-sm text-ink leading-relaxed">
+          <li class="flex items-start gap-3 bg-[#F9FAF8] p-3.5 rounded-xl border border-[#EEF1EC]">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0"></span>
+            <div class="w-full">
+              <strong class="font-semibold text-ink">Definición de rol explícito:</strong> Se asignó la identidad de un tutor senior de Python para calibrar el tono explicativo y la pedagogía técnica.
+            </div>
+          </li>
+          <li class="flex items-start gap-3 bg-[#F9FAF8] p-3.5 rounded-xl border border-[#EEF1EC]">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0"></span>
+            <div class="w-full">
+              <strong class="font-semibold text-ink">Especificidad y acotación temporal:</strong> Se delimitaron 4 semanas con bloques diarios de 45 minutos adaptados para principiantes absolutos.
+            </div>
+          </li>
+          <li class="flex items-start gap-3 bg-[#F9FAF8] p-3.5 rounded-xl border border-[#EEF1EC]">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0"></span>
+            <div class="w-full">
+              <strong class="font-semibold text-ink">Formato de entrega tabular:</strong> Se reemplazó la respuesta en texto libre por una tabla esquemática con cinco campos obligatorios de seguimiento.
+            </div>
+          </li>
+          <li class="flex items-start gap-3 bg-[#F9FAF8] p-3.5 rounded-xl border border-[#EEF1EC]">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0"></span>
+            <div class="w-full">
+              <strong class="font-semibold text-ink">Criterio de validación medible:</strong> Se incluyó un entregable tangible (proyecto CLI documentado) para certificar el progreso del estudiante.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. BOTONERA DE ACCIONES -->
+    <section class="flex flex-col sm:flex-row items-center gap-4 pt-2 pb-12">
+      <!-- Botón principal en píldora con círculo y flecha -->
+      <button class="w-full sm:w-auto min-h-[48px] px-7 py-3 rounded-full bg-accent hover:bg-accent-hover text-white font-medium text-sm flex items-center justify-center gap-3 shadow-btn transition-colors">
+        <span>Copiar prompt mejorado</span>
+        <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </span>
+      </button>
+
+      <!-- Botón secundario borde fino -->
+      <button class="w-full sm:w-auto min-h-[48px] px-7 py-3 rounded-full bg-white hover:bg-[#F9FAF8] text-ink font-medium text-sm border border-borderline shadow-sm transition-colors">
+        Probar otro prompt
+      </button>
+    </section>
+
+  </main>
+
+</body>
+</html>

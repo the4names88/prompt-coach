@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prompt Coach</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#14213D',
+            'secondary-text': '#5B6577',
+            'teal-brand': '#0F5C5A',
+            'canvas-bg': '#EEF1EC',
+            'marker': '#FFE45C'
+          },
+          fontFamily: {
+            title: ['"Bricolage Grotesque"', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #EEF1EC;
+      color: #14213D;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#EEF1EC] text-[#14213D] antialiased selection:bg-[#0F5C5A]/15 selection:text-[#0F5C5A]">
+<div class="max-w-6xl mx-auto px-4 pt-8 pb-16">
+<!-- Header como píldora flotante centrada -->
+<header class="bg-white/85 backdrop-blur-md rounded-full px-6 py-3.5 shadow-[0_12px_30px_-8px_rgba(15,92,90,0.07)] border border-white/80 flex items-center justify-between mb-8">
+<!-- Logo e Identidad -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#0F5C5A] flex items-center justify-center text-white shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M12 3H7a4 4 0 0 0 0 8h5a4 4 0 0 1 0 8H7"></path>
+<path d="M7 11V3"></path>
+</svg>
+</div>
+<span class="font-title font-bold text-lg tracking-tight text-[#14213D]">Prompt Coach</span>
+</div>
+<!-- Etiqueta IA activa -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full border border-[#0F5C5A]/15 bg-[#0F5C5A]/[0.08]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#0F5C5A]"></span>
+<span class="font-body text-[13px] font-medium text-[#0F5C5A]">IA activa</span>
+</div>
+</header>
+<!-- Stepper de 3 pasos en píldora flotante -->
+<div class="flex justify-center mb-10">
+<nav aria-label="Progreso" class="inline-flex items-center bg-white/90 backdrop-blur-md px-2 py-1.5 rounded-full border border-[rgba(15,92,90,0.08)] shadow-[0_8px_20px_-6px_rgba(15,92,90,0.05)] gap-1">
+<!-- Paso 1: Activo -->
+<span class="bg-[#0F5C5A] text-white px-5 py-2 rounded-full font-medium text-sm shadow-sm transition-all">
+          1 · Escribir
+        </span>
+<!-- Paso 2: Inactivo -->
+<span class="text-[#5B6577] px-4 py-2 text-sm font-medium">
+          2 · Evaluar
+        </span>
+<!-- Paso 3: Inactivo -->
+<span class="text-[#5B6577] px-4 py-2 text-sm font-medium">
+          3 · Mejorar
+        </span>
+</nav>
+</div>
+<!-- Grid editorial a dos columnas (55% / 45%) -->
+<main class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+<!-- Columna Izquierda (lg:col-span-7 ~55%) -->
+<section class="lg:col-span-7 flex flex-col">
+<!-- Encabezado editorial -->
+<h1 class="font-title text-[38px] md:text-[44px] font-extrabold tracking-tight text-[#14213D] leading-[1.12] mb-3">
+          Escribe el prompt que quieres mejorar
+        </h1>
+<p class="font-body text-lg text-[#5B6577] font-normal mb-8">
+          Lo evaluamos con 4 criterios y, si quieres, lo reescribimos mejor.
+        </p>
+<!-- Formulario con contenedor de doble marco -->
+<form class="w-full" id="eval-form" onsubmit="event.preventDefault();">
+<!-- Bandeja exterior translúcida -->
+<div class="bg-white/70 backdrop-blur-sm p-[6px] rounded-[32px] border border-[rgba(15,92,90,0.08)] shadow-[0_24px_48px_-12px_rgba(15,92,90,0.08),0_8px_20px_-6px_rgba(15,92,90,0.04)]">
+<!-- Núcleo interior blanco -->
+<div class="bg-white rounded-[26px] p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+<label class="sr-only" for="prompt-input">Prompt a evaluar</label>
+<textarea class="w-full font-mono text-base text-[#14213D] placeholder:text-[#5B6577]/50 placeholder:font-mono bg-transparent border-0 p-0 focus:ring-0 focus:outline-none resize-none leading-relaxed h-56" id="prompt-input" maxlength="5000" placeholder="Ejemplo: dame un plan de estudio de Python" rows="8"></textarea>
+<div class="pt-4 mt-2 border-t border-[rgba(15,92,90,0.06)] flex justify-end items-center">
+<span class="font-mono text-xs text-[#5B6577]" id="char-counter">
+                  0 / 5000
+                </span>
+</div>
+</div>
+</div>
+<!-- Botón de acción principal -->
+<div class="mt-6 flex">
+<button class="w-full sm:w-auto inline-flex items-center justify-between gap-5 bg-[#0F5C5A] text-white font-body font-medium text-base px-8 py-4 rounded-full min-h-[48px] shadow-[0_12px_24px_-6px_rgba(15,92,90,0.25)] hover:bg-[#0c4b49] transition cursor-pointer" id="submit-eval-btn" type="submit">
+<span>Evaluar prompt</span>
+<div class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M5 12h14"></path>
+<path d="M13 6l6 6-6 6"></path>
+</svg>
+</div>
+</button>
+</div>
+</form>
+</section>
+<!-- Columna Derecha (lg:col-span-5 ~45%) -->
+<aside class="lg:col-span-5">
+<!-- Bandeja exterior translúcida -->
+<div class="bg-white/70 backdrop-blur-sm p-[6px] rounded-[32px] border border-[rgba(15,92,90,0.08)] shadow-[0_24px_48px_-12px_rgba(15,92,90,0.08),0_8px_20px_-6px_rgba(15,92,90,0.04)]">
+<!-- Núcleo interior blanco -->
+<div class="bg-white rounded-[26px] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+<h2 class="font-title font-bold text-xl text-[#14213D] mb-5 flex items-center gap-2.5">
+<span>Así se ve un buen prompt</span>
+</h2>
+<!-- Contenedor del código/ejemplo taxonómico -->
+<div class="bg-[#F4F6F1]/70 rounded-2xl p-5 border border-[rgba(15,92,90,0.06)] font-mono text-sm leading-relaxed text-[#14213D] space-y-4">
+<!-- Frase 1: Rol -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Rol</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"Eres un tutor de Python."</mark>
+</div>
+<!-- Frase 2: Tarea -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Tarea</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"Dame un plan de estudio"</mark>
+</div>
+<!-- Frase 3: Contexto -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Contexto</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"de 4 semanas para un principiante."</mark>
+</div>
+<!-- Frase 4: Formato -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Formato</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"Responde en una tabla."</mark>
+</div>
+</div>
+<!-- Divisor y nota explicativa -->
+<p class="font-body text-sm text-[#5B6577] mt-5 pt-4 border-t border-[rgba(15,92,90,0.08)] leading-normal">
+              Evaluamos cuatro cosas: longitud, tarea clara, contexto y formato.
+            </p>
+</div>
+</div>
+</aside>
+</main>
+</div>
+<script>
+    (function() {
+      const textarea = document.getElementById('prompt-input');
+      const counter = document.getElementById('char-counter');
+      const maxChars = 5000;
+
+      if (textarea && counter) {
+        textarea.addEventListener('input', function() {
+          counter.textContent = this.value.length + ' / ' + maxChars;
+        });
+      }
+    })();
+  </script>
+</body></html>
