@@ -36,7 +36,8 @@ Usa el MCP de Stitch:
 3. En cada una conserva el contrato de docs/GUIA-STITCH.md: los ids de la sección 4, el atributo
    data-page en <body>, la etiqueta <script src="/static/app.js"></script> y un pequeño bloque <style>
    para las clases dinámicas (ok, fail, high, mid, low).
-4. Crea docs/DESIGN.md con la paleta (códigos hex), tipografías y componentes repetidos.
+4. Abre docs/DESIGN.md (ya existe: es la dirección visual) y completa su sección 9 con la paleta (códigos hex),
+   tipografías y componentes que Stitch realmente generó. No borres el resto del archivo.
 Reglas: no cambies static/app.js, app/, AGENTS.md ni opencode.json; no instales dependencias; no hagas commits.
 Al final, muéstrame la lista de archivos creados.
 ```
