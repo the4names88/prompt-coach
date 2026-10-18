@@ -92,16 +92,18 @@ curl -X POST http://127.0.0.1:8000/improve-prompt -H "Content-Type: application/
 - **Spec** (guías 13 a 15): `docs/SPEC.md` define requisitos, casos borde y criterios de terminado antes del código.
 
 ## 7. Evidencia del uso consciente de herramientas de IA
-**Herramientas usadas:** Claude (diseño inicial del código, la skill y la spec), Stitch (diseño de interfaz) y la API de OpenAI (dentro del producto).
+**Herramientas usadas:** Claude (diseño inicial del código, la skill y la spec), Stitch (diseño de interfaz, descargado con su MCP desde Cline), Cline (agente con el que probé la skill) y la API de OpenAI (dentro del producto).
+
+**Modelos:** la app se probó con `gpt-5.4-mini` (se elige con la variable `OPENAI_MODEL`, así que se puede cambiar sin tocar el código). Cline usó `gpt-5.4`.
 
 | Qué sugirió la IA | Qué validé / ajusté yo |
 |---|---|
-| Estructura en rutas, servicios y esquemas | (completar: qué revisé y por qué) |
+| Estructura en rutas, servicios y esquemas | Abrí la documentación automática (`/docs`) y probé los endpoints desde ahí antes de usar las vistas |
 | Reglas de validación del prompt | Probé en la interfaz el prompt "Eres un tutor de Python. Dame un plan de estudio de 4 semanas para un principiante. Responde en una tabla." y dio solo 50 de 100, aunque tiene verbo de acción y formato. Encontré que las listas de palabras eran demasiado cortas ("dame" no estaba y buscaba "en tabla", no "en una tabla"). Agregué verbos en español, cambié los marcadores de formato y escribí una prueba para que no vuelva a pasar |
-| Endpoint `/improve-prompt` con modo de respaldo sin clave | (completar: cómo lo probé, con el mock o con la clave real) |
-| Contenido del `SKILL.md` | (completar: cómo probé la skill con Copilot u otro agente) |
+| Endpoint `/improve-prompt` con modo de respaldo sin clave | Lo probé primero sin clave (modo reglas) y luego con la clave real: salió "IA activa" y el puntaje subió de 50 a 100. Ahí encontré un fallo: el modelo coló una palabra en hindi en el prompt mejorado. Una regla extra en las instrucciones no bastó, así que agregué una verificación en el código que detecta letras de otros alfabetos y vuelve a pedir la respuesta (hasta 3 veces), con 2 pruebas nuevas |
+| Contenido del `SKILL.md` | Probé la skill con el agente Cline en 3 casos (ver evidencia abajo). Observé que Cline primero adivinó una ruta incorrecta de la API y luego la corrigió leyendo la documentación de la API; y que cuando el servidor estaba apagado no inventó un puntaje, sino que pidió encenderlo, como indica la skill |
 
-**Validación realizada:** `pytest` (14 pruebas), pruebas con el servidor simulado de OpenAI y revisión de las
+**Validación realizada:** `pytest` (16 pruebas), pruebas con el servidor simulado de OpenAI y revisión de las
 3 vistas en escritorio y móvil.
 
 **Evidencia:**
@@ -114,6 +116,18 @@ curl -X POST http://127.0.0.1:8000/improve-prompt -H "Content-Type: application/
 
 3. El hook `commit-msg` rechaza el mensaje `cambios` porque no sigue Conventional Commits.
    ![Hook que rechaza un commit sin formato](docs/img/hook-rechaza-commit.png)
+
+4. Un fallo real con la IA: el modelo mezcló una palabra en hindi en el prompt mejorado.
+   ![Palabra en hindi en el prompt mejorado](docs/img/bug-palabra-en-hindi.png)
+
+5. Prueba de la skill con el agente Cline. **Caso 1, prompt inválido ("hola"):** el agente valida primero y no llama a la IA.
+   ![Cline con un prompt inválido](docs/img/skill-prueba1-prompt-invalido.png)
+
+6. **Caso 2, prompt válido pero incompleto:** valida, muestra 50/100 y espera el permiso antes de mejorar.
+   ![Cline valida y pide permiso](docs/img/skill-prueba2-valida-y-pide-permiso.png)
+
+7. **Caso 3, la persona acepta:** recién ahí llama a `/improve-prompt` y devuelve el prompt mejorado con 100/100.
+   ![Cline mejora con permiso](docs/img/skill-prueba3-mejora-con-permiso.png)
 
 ## 8. Qué del curso apliqué y dónde
 
