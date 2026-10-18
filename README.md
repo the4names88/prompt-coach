@@ -91,6 +91,13 @@ curl -X POST http://127.0.0.1:8000/improve-prompt -H "Content-Type: application/
   los valores finales en `docs/DESIGN.md` (sección 9) y el contrato de ids en `docs/GUIA-STITCH.md`.
 - **Spec** (guías 13 a 15): `docs/SPEC.md` define requisitos, casos borde y criterios de terminado antes del código.
 
+
+**Interfaz final** (diseño de Stitch ya conectado a la API, con la IA activa):
+
+| 1 · Escribir | 2 · Evaluar | 3 · Mejorar |
+|---|---|---|
+| ![Vista 1](docs/img/vista1-escribir.png) | ![Vista 2](docs/img/vista2-evaluacion.png) | ![Vista 3](docs/img/vista3-mejorado.png) |
+
 ## 7. Evidencia del uso consciente de herramientas de IA
 **Herramientas usadas:** Claude (diseño inicial del código, la skill y la spec), Stitch (diseño de interfaz, descargado con su MCP desde Cline), Cline (agente con el que probé la skill) y la API de OpenAI (dentro del producto).
 
