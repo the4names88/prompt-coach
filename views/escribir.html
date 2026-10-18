@@ -1,37 +1,191 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prompt Coach · Escribe tu prompt</title>
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="/static/styles.css">
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prompt Coach · Escribir</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#14213D',
+            'secondary-text': '#5B6577',
+            'teal-brand': '#0F5C5A',
+            'canvas-bg': '#EEF1EC',
+            'marker': '#FFE45C'
+          },
+          fontFamily: {
+            title: ['"Bricolage Grotesque"', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #EEF1EC;
+      color: #14213D;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+      /* Clases que escribe static/app.js (contrato en docs/GUIA-STITCH.md, sección 4) */
+    .status { min-height: 1.25rem; font-size: .875rem; color: #5B6577; }
+    .status.error { color: #D64545; font-weight: 600; }
+    button:disabled { opacity: .6; cursor: not-allowed; }
+    .score { --pct: 0; --c: #D64545; position: relative; isolation: isolate; width: 11rem; height: 11rem; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: conic-gradient(var(--c) calc(var(--pct) * 1%), #EEF1EC 0);
+      font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1; color: #14213D; }
+    .score::before { content: ""; position: absolute; inset: 10px; border-radius: 50%; background: #fff; z-index: -1; }
+    .score small { display: block; font-size: .9rem; font-weight: 600; color: #5B6577; margin-top: .35rem; }
+    .score.high { --c: #1F9D6B; } .score.mid { --c: #C98A00; } .score.low { --c: #D64545; }
+    .checks { display: flex; flex-direction: column; gap: .625rem; list-style: none; padding: 0; margin: 0; }
+    .checks li { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; border-radius: .75rem;
+      background: rgba(238,241,236,.6); border-left: 3px solid; font-size: .875rem; font-weight: 600; color: #14213D; }
+    .checks li.ok { border-color: #1F9D6B; } .checks li.fail { border-color: #D64545; }
+    .checks .mark { width: 1.25rem; height: 1.25rem; flex: none; border-radius: 50%; display: grid; place-items: center;
+      font: 700 .75rem 'JetBrains Mono', monospace; }
+    .checks li.ok .mark { background: rgba(31,157,107,.15); color: #1F9D6B; }
+    .checks li.fail .mark { background: rgba(214,69,69,.15); color: #D64545; }
+    .checks li::after { margin-left: auto; font-size: .75rem; padding: .125rem .625rem; border-radius: 999px; white-space: nowrap; }
+    .checks li.ok::after { content: "Cumplida"; color: #1F9D6B; background: rgba(31,157,107,.1); }
+    .checks li.fail::after { content: "Pendiente"; color: #D64545; background: rgba(214,69,69,.1); }
+    .suggest { counter-reset: s; display: flex; flex-direction: column; gap: 1rem; list-style: none; padding: 0; margin: 0; }
+    .suggest li { counter-increment: s; display: flex; gap: 1rem; align-items: flex-start; padding: 1rem; border-radius: .75rem;
+      background: rgba(238,241,236,.4); border: 1px solid rgba(15,92,90,.05); color: #14213D; font-size: .95rem; line-height: 1.6; }
+    .suggest li::before { content: counter(s); flex: none; width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: rgba(15,92,90,.1); color: #0F5C5A; font: 700 .875rem 'JetBrains Mono', monospace; display: grid; place-items: center; }
+    .changes { display: flex; flex-direction: column; gap: .875rem; list-style: none; padding: 0; margin: 0; }
+    .changes li { display: flex; gap: .75rem; align-items: flex-start; padding: .875rem; border-radius: .75rem;
+      background: #F9FAF8; border: 1px solid #EEF1EC; color: #14213D; font-size: .875rem; line-height: 1.6; }
+    .changes li::before { content: ""; flex: none; width: .375rem; height: .375rem; border-radius: 50%; background: #0F5C5A; margin-top: .55rem; }
+  </style>
 </head>
-<body data-page="escribir">
-  <div class="wrap">
-    <header class="top">
-      <div class="logo">Prompt <span>Coach</span></div>
-      <span class="badge-mode" id="mode-badge">...</span>
-    </header>
-    <ol class="steps" aria-label="Pasos">
-      <li class="on">1 · Escribir</li>
-      <li>2 · Evaluar</li>
-      <li>3 · Mejorar</li>
-    </ol>
-
-    <h1>Escribe el prompt que quieres mejorar</h1>
-    <p class="lead">Lo evaluamos con 4 criterios y, si quieres, lo reescribimos mejor.</p>
-
-    <div class="card">
-      <label for="prompt-input"><h2>Tu prompt</h2></label>
-      <textarea id="prompt-input" placeholder="Ejemplo: dame un plan de estudio de Python"></textarea>
-      <div class="counter" id="counter">0 / 5000</div>
-      <div class="actions">
-        <button class="primary" id="btn-evaluar" type="button">Evaluar prompt</button>
-      </div>
-      <div class="status" id="status" role="status" aria-live="polite"></div>
-    </div>
-  </div>
-  <script src="/static/app.js"></script>
-</body>
-</html>
+<body data-page="escribir" class="min-h-screen bg-[#EEF1EC] text-[#14213D] antialiased selection:bg-[#0F5C5A]/15 selection:text-[#0F5C5A]">
+<div class="max-w-6xl mx-auto px-4 pt-8 pb-16">
+<!-- Header como píldora flotante centrada -->
+<header class="bg-white/85 backdrop-blur-md rounded-full px-6 py-3.5 shadow-[0_12px_30px_-8px_rgba(15,92,90,0.07)] border border-white/80 flex items-center justify-between mb-8">
+<!-- Logo e Identidad -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#0F5C5A] flex items-center justify-center text-white shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M12 3H7a4 4 0 0 0 0 8h5a4 4 0 0 1 0 8H7"></path>
+<path d="M7 11V3"></path>
+</svg>
+</div>
+<span class="font-title font-bold text-lg tracking-tight text-[#14213D]">Prompt Coach</span>
+</div>
+<!-- Etiqueta IA activa -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full border border-[#0F5C5A]/15 bg-[#0F5C5A]/[0.08]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#0F5C5A]"></span>
+<span class="font-body text-[13px] font-medium text-[#0F5C5A]" id="mode-badge">IA activa</span>
+</div>
+</header>
+<!-- Stepper de 3 pasos en píldora flotante -->
+<div class="flex justify-center mb-10">
+<nav aria-label="Progreso" class="inline-flex items-center bg-white/90 backdrop-blur-md px-2 py-1.5 rounded-full border border-[rgba(15,92,90,0.08)] shadow-[0_8px_20px_-6px_rgba(15,92,90,0.05)] gap-1">
+<!-- Paso 1: Activo -->
+<span class="bg-[#0F5C5A] text-white px-5 py-2 rounded-full font-medium text-sm shadow-sm transition-all">
+          1 · Escribir
+        </span>
+<!-- Paso 2: Inactivo -->
+<span class="text-[#5B6577] px-4 py-2 text-sm font-medium">
+          2 · Evaluar
+        </span>
+<!-- Paso 3: Inactivo -->
+<span class="text-[#5B6577] px-4 py-2 text-sm font-medium">
+          3 · Mejorar
+        </span>
+</nav>
+</div>
+<!-- Grid editorial a dos columnas (55% / 45%) -->
+<main class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+<!-- Columna Izquierda (lg:col-span-7 ~55%) -->
+<section class="lg:col-span-7 flex flex-col">
+<!-- Encabezado editorial -->
+<h1 class="font-title text-[38px] md:text-[44px] font-extrabold tracking-tight text-[#14213D] leading-[1.12] mb-3">
+          Escribe el prompt que quieres mejorar
+        </h1>
+<p class="font-body text-lg text-[#5B6577] font-normal mb-8">
+          Lo evaluamos con 4 criterios y, si quieres, lo reescribimos mejor.
+        </p>
+<!-- Formulario con contenedor de doble marco -->
+<form class="w-full" id="eval-form" onsubmit="event.preventDefault();">
+<!-- Bandeja exterior translúcida -->
+<div class="bg-white/70 backdrop-blur-sm p-[6px] rounded-[32px] border border-[rgba(15,92,90,0.08)] shadow-[0_24px_48px_-12px_rgba(15,92,90,0.08),0_8px_20px_-6px_rgba(15,92,90,0.04)]">
+<!-- Núcleo interior blanco -->
+<div class="bg-white rounded-[26px] p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+<label class="sr-only" for="prompt-input">Prompt a evaluar</label>
+<textarea class="w-full font-mono text-base text-[#14213D] placeholder:text-[#5B6577]/50 placeholder:font-mono bg-transparent border-0 p-0 focus:ring-0 focus:outline-none resize-none leading-relaxed h-56" id="prompt-input" maxlength="5000" placeholder="Ejemplo: dame un plan de estudio de Python" rows="8"></textarea>
+<div class="pt-4 mt-2 border-t border-[rgba(15,92,90,0.06)] flex justify-end items-center">
+<span class="font-mono text-xs text-[#5B6577]" id="counter">
+                  0 / 5000
+                </span>
+</div>
+</div>
+</div>
+<!-- Botón de acción principal -->
+<div class="mt-6 flex">
+<button class="w-full sm:w-auto inline-flex items-center justify-between gap-5 bg-[#0F5C5A] text-white font-body font-medium text-base px-8 py-4 rounded-full min-h-[48px] shadow-[0_12px_24px_-6px_rgba(15,92,90,0.25)] hover:bg-[#0c4b49] transition cursor-pointer" id="btn-evaluar" type="submit">
+<span>Evaluar prompt</span>
+<div class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M5 12h14"></path>
+<path d="M13 6l6 6-6 6"></path>
+</svg>
+</div>
+</button>
+</div>
+<p class="status mt-4" id="status" role="status" aria-live="polite"></p>
+</form>
+</section>
+<!-- Columna Derecha (lg:col-span-5 ~45%) -->
+<aside class="lg:col-span-5">
+<!-- Bandeja exterior translúcida -->
+<div class="bg-white/70 backdrop-blur-sm p-[6px] rounded-[32px] border border-[rgba(15,92,90,0.08)] shadow-[0_24px_48px_-12px_rgba(15,92,90,0.08),0_8px_20px_-6px_rgba(15,92,90,0.04)]">
+<!-- Núcleo interior blanco -->
+<div class="bg-white rounded-[26px] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+<h2 class="font-title font-bold text-xl text-[#14213D] mb-5 flex items-center gap-2.5">
+<span>Así se ve un buen prompt</span>
+</h2>
+<!-- Contenedor del código/ejemplo taxonómico -->
+<div class="bg-[#F4F6F1]/70 rounded-2xl p-5 border border-[rgba(15,92,90,0.06)] font-mono text-sm leading-relaxed text-[#14213D] space-y-4">
+<!-- Frase 1: Rol -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Rol</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"Eres un tutor de Python."</mark>
+</div>
+<!-- Frase 2: Tarea -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Tarea</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"Dame un plan de estudio"</mark>
+</div>
+<!-- Frase 3: Contexto -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Contexto</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"de 4 semanas para un principiante."</mark>
+</div>
+<!-- Frase 4: Formato -->
+<div class="flex flex-col gap-1.5 items-start">
+<span class="font-body text-[11px] font-semibold text-[#0F5C5A] bg-[#0F5C5A]/10 px-2 py-0.5 rounded-full tracking-wide">Formato</span>
+<mark class="px-1.5 py-0.5 rounded font-semibold text-[#14213D]" style="background-color: #FFE45C;">"Responde en una tabla."</mark>
+</div>
+</div>
+<!-- Divisor y nota explicativa -->
+<p class="font-body text-sm text-[#5B6577] mt-5 pt-4 border-t border-[rgba(15,92,90,0.08)] leading-normal">
+              Evaluamos cuatro cosas: longitud, tarea clara, contexto y formato.
+            </p>
+</div>
+</div>
+</aside>
+</main>
+</div>
+<script src="/static/app.js"></script>
+</body></html>

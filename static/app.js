@@ -94,6 +94,7 @@ function pageEvaluacion() {
   $("prompt-echo").textContent = prompt;
   const score = $("score");
   score.className = `score ${scoreClass(v.score)}`;
+  score.style.setProperty("--pct", v.score); // el anillo se llena según el puntaje
   score.innerHTML = `${v.score}<small>/100</small>`;
   $("verdict").textContent = v.is_valid ? "El prompt cumple lo mínimo." : "Al prompt le falta lo mínimo: tarea clara o más detalle.";
 
@@ -102,7 +103,12 @@ function pageEvaluacion() {
   for (const [key, ok] of Object.entries(v.checks)) {
     const li = document.createElement("li");
     li.className = ok ? "ok" : "fail";
-    li.textContent = `${ok ? "✔" : "✖"} ${CHECK_LABELS[key] || key}`;
+    const mark = document.createElement("span");
+    mark.className = "mark";
+    mark.textContent = ok ? "✓" : "✕";
+    const name = document.createElement("span");
+    name.textContent = CHECK_LABELS[key] || key;
+    li.append(mark, name);
     checks.appendChild(li);
   }
 
