@@ -1,6 +1,8 @@
 # Prompt Coach: API FastAPI con skill agéntica `prompt-validator`
 
-Actividad Individual · Diseño e Integración de Skills Agénticas en una API desarrollada con FastAPI (KODIGO).
+Diseño e Integración de Skills Agénticas en una API desarrollada con FastAPI (KODIGO) Trabajo final.
+
+**Repositorio en GitHub:** [the4names88/prompt-coach](https://github.com/the4names88/prompt-coach)
 
 Prompt Coach evalúa un prompt con 4 criterios y lo reescribe mejor. Usa OpenAI para mejorar el prompt cuando
 hay una API key configurada, y una plantilla de reglas cuando no. Tiene 3 vistas web diseñadas con Stitch
